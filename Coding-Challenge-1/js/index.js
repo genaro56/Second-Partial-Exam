@@ -1,25 +1,33 @@
 // https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
-document.getElementById("form").addEventListener('submit', (e) => {
+
+var queryText = document.getElementById("query");
+document.getElementById("foodForm").addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log(e.target)
-    searchAPI(e.target.value);
+    searchAPI();
 })
 
 function displayResults(results) {
-    console.log(results)
-    for (let index = 0; index < results.length; index++) {
-        const food = results[index];
-        document.getElementById("results").innerHTML = `
+    console.log("results", results)
+    const foodList = results.meals;
+    for (let index = 0; index < foodList.length; index++) {
+        const food = foodList[index];
+        const instructions = Object.keys(food).filter(key => String(key(0,10)) === "strMeasure");
+        console.log(instructions)
+        const html = `
             <div>
-                <span>${food.title}</span>
+                <span class="desc">Meal: ${food.strMeal}</span>
+                <span class="desc">Area: ${food.strArea}</span>
+                <img src="${food.strMealThumb}"></img>
             </div>
         `;
+        document.getElementById("results").insertAdjacentHTML("afterbegin", html);
     }
 }
 
-function searchAPI(value) {
+function searchAPI() {
+    console.log(queryText.value)
     let food = {}
-    food = fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
+    food = fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${queryText.value}`)
         .then((res) => {
             if(res.status != 200) {
                 console.error("The query doesnt exist" + res.status);
