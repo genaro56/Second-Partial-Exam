@@ -12,12 +12,16 @@ function displayResults(results) {
     for (let index = 0; index < foodList.length; index++) {
         const food = foodList[index];
         const instructions = Object.keys(food).filter(key => {
-            String(key).slice(0 , 10) === "strMeasure"
+            if(String(key).slice(0 , 10) === "strMeasure")
+                return key
         });
         console.log(instructions)
         const html = `
             <div>
                 <span class="desc">Meal: ${food.strMeal}</span>
+                ${instructions.forEach(element => {
+                  return `<span>${food[element]}</span>`
+                })}
                 <span class="desc">Area: ${food.strArea}</span>
                 <img src="${food.strMealThumb}"></img>
             </div>
