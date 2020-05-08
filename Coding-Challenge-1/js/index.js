@@ -11,7 +11,9 @@ function displayResults(results) {
     const foodList = results.meals;
     for (let index = 0; index < foodList.length; index++) {
         const food = foodList[index];
-        const instructions = Object.keys(food).filter(key => String(key(0,10)) === "strMeasure");
+        const instructions = Object.keys(food).filter(key => {
+            String(key).slice(0 , 10) === "strMeasure"
+        });
         console.log(instructions)
         const html = `
             <div>
